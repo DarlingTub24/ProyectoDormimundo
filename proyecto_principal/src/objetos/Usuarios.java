@@ -1,8 +1,8 @@
 package objetos;
 
 public class Usuarios {
-	String nombre;
-	String id;
+	private String nombre;
+	private String id;
 	
 	public Usuarios(String nombre, String id) {
 		this.nombre = nombre;
@@ -25,10 +25,6 @@ public class Usuarios {
 		this.id = id;
 	}
 
-	@Override
-	public String toString() {
-		return "[Nombre=" + nombre + ", id=" + id + "]";
-	}
 	
 	
 }

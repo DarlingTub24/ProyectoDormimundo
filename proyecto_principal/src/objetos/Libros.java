@@ -1,8 +1,8 @@
 package objetos;
 
 public class Libros {
-	String nombre;
-	String autor;
+	private String nombre;
+	private String autor;
 	boolean prestado;
 	public Libros(String nombre, String autor,boolean prestado) {
 		this.nombre=nombre;
@@ -26,11 +26,6 @@ public class Libros {
 	}
 	public void setPrestado(boolean prestado) {
 		this.prestado = prestado;
-	}
-	@Override
-	public String toString() {
-		return "[Nombre=" + nombre + ", Autor=" + autor + ", Prestado=" + prestado + "]";
-	}
-	
+	}	
 	
 }
