@@ -7,20 +7,29 @@ public class Prestamos {
 		private Usuarios usuario;
 		private Libros libro;
 		private String fecha_Prestamo;
+		private String fecha_Vencimiento;
 		private String fecha_Devolucion;
 		private DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		
-		public Prestamos(Usuarios usuario, Libros libro) {
+		public Prestamos(Usuarios usuario, Libros libro, String fecha_Vencimiento) {
 			super();
 			this.usuario = usuario;
 			this.libro = libro;
 			this.fecha_Prestamo = LocalDate.now().format(formato);
+			this.setFecha_Vencimiento(fecha_Vencimiento);
 			this.fecha_Devolucion = null;
 			this.libro.setPrestado(true);
 		}
 		public void devolver() {
-			this.fecha_Devolucion=LocalDate.now().format(formato);
-			this.libro.setPrestado(false);
+			/*
+			 if (!LocalDate.now().isAfter(LocalDate.parse(fecha_Vencimiento,formato))) {
+				this.fecha_Devolucion=LocalDate.now().format(formato);
+				this.libro.setPrestado(false);
+			} 
+		*/
+				this.fecha_Devolucion=LocalDate.now().format(formato);
+				this.libro.setPrestado(false);
+
 		}
 		public String getFecha_Prestamo() {
 			return fecha_Prestamo;
@@ -45,6 +54,12 @@ public class Prestamos {
 		}
 		public void setLibro(Libros libro) {
 			this.libro = libro;
+		}
+		public String getFecha_Vencimiento() {
+			return fecha_Vencimiento;
+		}
+		public void setFecha_Vencimiento(String fecha_Vencimiento) {
+			this.fecha_Vencimiento = fecha_Vencimiento;
 		}
 		
 		
