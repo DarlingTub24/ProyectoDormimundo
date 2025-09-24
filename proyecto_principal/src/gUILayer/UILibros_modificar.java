@@ -1,6 +1,8 @@
 package gUILayer;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -18,7 +20,8 @@ public class UILibros_modificar extends JFrame{
 		private GridBagLayout layout = new GridBagLayout();
 		private JButton boton_modificar;
 		private int indiceLibro;
-	
+		private JLabel titulo,autor;
+
 		public UILibros_modificar(int indice) {
 			indiceLibro=indice;
 			setTitle("Modificar Libro");
@@ -37,25 +40,33 @@ public class UILibros_modificar extends JFrame{
 			//PARTE DEL Titulo:
 			gbc.gridx = 0;
 			gbc.gridy = 0;
-			gbc.fill= GridBagConstraints.HORIZONTAL;
-			panel.add(new JLabel("Titulo:"),gbc);
+			gbc.weightx=1.0;
+			gbc.weighty=1.0;
+			gbc.fill= GridBagConstraints.NONE;
+			titulo = new JLabel("Titulo:");
+			titulo.setFont(new Font("Arial", Font.PLAIN, 24));
+			panel.add(titulo,gbc);
 			//Insertar JTextField
-			JTextField txt_titulo = new JTextField(10);
+			JTextField txt_titulo = new JTextField(UILibros.listaLibros.get(indiceLibro).getTitulo(),10);
 			gbc.gridx = 1;
 			gbc.gridy = 0;
 			gbc.fill= GridBagConstraints.HORIZONTAL;
+			txt_titulo.setFont(new Font("Arial", Font.PLAIN, 24));
 			panel.add(txt_titulo,gbc);
 			
 			//PARTE DEL Autor:
 			gbc.gridx = 0;
 			gbc.gridy = 1;
-			gbc.fill= GridBagConstraints.HORIZONTAL;
-			panel.add(new JLabel("Autor:"),gbc);
+			gbc.fill= GridBagConstraints.NONE;
+			autor = new JLabel("Autor:");
+			autor.setFont(new Font("Arial", Font.PLAIN, 24));
+			panel.add(autor,gbc);
 			//Insertar JTextField
-			JTextField txt_autor = new JTextField(10);
+			JTextField txt_autor = new JTextField(UILibros.listaLibros.get(indiceLibro).getAutor(),10);
 			gbc.gridx = 1;
 			gbc.gridy = 1;
 			gbc.fill= GridBagConstraints.HORIZONTAL;
+			txt_autor.setFont(new Font("Arial", Font.PLAIN, 24));
 			panel.add(txt_autor,gbc);
 			
 			//PARTE DEL Boton Agregar
@@ -63,12 +74,14 @@ public class UILibros_modificar extends JFrame{
 			gbc.gridy = 2;
 			gbc.gridwidth=2;
 			gbc.fill= GridBagConstraints.HORIZONTAL;
-			boton_modificar = new JButton("AGREGAR");
+			boton_modificar = new JButton("MODIFICAR");
+			boton_modificar.setFont(new Font("Arial", Font.BOLD, 24));
 			boton_modificar.addActionListener(e -> modificarArrayList(txt_titulo.getText(),txt_autor.getText()));
 			panel.add(boton_modificar,gbc);
 			
 			//Aniadir panel
 			panel.setBackground(Color.pink);
+			panel.setPreferredSize(new Dimension(400, 300));
 			add(panel);
 			
 		}

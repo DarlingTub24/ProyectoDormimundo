@@ -1,5 +1,7 @@
 package gUILayer;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -14,6 +16,7 @@ public class UILibros_eliminar extends JFrame {
 	private GridBagLayout layout = new GridBagLayout();
 	private JButton boton_Si,boton_No;
 	private int indiceLibro;
+	private JLabel aviso;
 	public UILibros_eliminar(int indice) {
 		indiceLibro=indice;
 		setTitle("Eliminar Libro");
@@ -34,7 +37,10 @@ public class UILibros_eliminar extends JFrame {
 		gbc.gridy = 0;
 		gbc.gridwidth=2;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
-		panel.add(new JLabel("Esta seguro que desea eliminarlo?"),gbc);
+		aviso=new JLabel("Esta seguro que desea eliminarlo?");
+		aviso.setFont(new Font("Arial", Font.PLAIN, 24));
+		aviso.setForeground(Color.RED);
+		panel.add(aviso,gbc);
 		
 		//PARTE DEL Boton Si
 		gbc.gridx = 0;
@@ -43,6 +49,7 @@ public class UILibros_eliminar extends JFrame {
 		gbc.weightx = 0.5; 
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		boton_Si = new JButton("SI");
+		boton_Si.setFont(new Font("Arial", Font.BOLD, 24));
 		boton_Si.addActionListener(e -> eliminarLibro(indiceLibro));
 		panel.add(boton_Si,gbc);
 		
@@ -53,6 +60,7 @@ public class UILibros_eliminar extends JFrame {
 		gbc.weightx = 0.5; 
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		boton_No = new JButton("NO");
+		boton_No.setFont(new Font("Arial", Font.PLAIN, 24));
 		boton_No.addActionListener(e -> this.dispose());
 		panel.add(boton_No,gbc);
 		
