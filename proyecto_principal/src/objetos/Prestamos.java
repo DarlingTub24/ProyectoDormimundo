@@ -22,7 +22,7 @@ public class Prestamos {
 		}
 		public void devolver() {
 			/*
-			 if (!LocalDate.now().isAfter(LocalDate.parse(fecha_Vencimiento,formato))) {
+			if (!LocalDate.now().isAfter(LocalDate.parse(fecha_Vencimiento,formato))) {
 				this.fecha_Devolucion=LocalDate.now().format(formato);
 				this.libro.setPrestado(false);
 			} 
