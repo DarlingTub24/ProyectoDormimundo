@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -108,7 +109,32 @@ public class UIPrestamos_agregar extends JFrame{
 	}
 
 	public void agregarArrayList(Usuarios usuario, Libros libro, String fVencimiento) {
-		 UIPrestamos.listaPrestamos.add(new Prestamos(usuario, libro, fVencimiento));
-		 this.dispose();
+		String fVencimientoTrim = fVencimiento.trim();
+		ArrayList<String> errores = new ArrayList<>();
+		boolean fechaValida = validaFecha(fVencimientoTrim);
+		if (usuario==null ) {
+			errores.add("•Seleccione un Usuario de la lista");
+		}
+		if (libro==null) {
+			errores.add("•Seleccione un Libro de la lista");
+		}
+		if (fVencimientoTrim.isEmpty()) {
+			errores.add("•Ingrese una fecha de Vencimiento");
+		}
+		if (!fechaValida) {
+			errores.add("•La fecha esta erronea");
+		}
+		if (errores.isEmpty()) {
+			 UIPrestamos.listaPrestamos.add(new Prestamos(usuario, libro, fVencimiento));
+			 this.dispose();
+		}
+		
+	}
+	public boolean validaFecha(String fVencimientoTrim) {
+		Boolean flag=false; 
+		if (fVencimientoTrim.matches("^(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[0-2])/\\d{4}$")) {
+			flag=true;
+		}
+		return flag;
 	}
 }

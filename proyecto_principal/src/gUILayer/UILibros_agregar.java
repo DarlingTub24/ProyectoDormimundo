@@ -10,6 +10,7 @@ import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -83,7 +84,15 @@ public class UILibros_agregar extends JFrame{
 			add(panel);
 	 }
 	public void agregarArrayList(String txt_titulo,String txt_autor) {
-		UILibros.listaLibros.add(new Libros(txt_titulo,txt_autor));
-		this.dispose();
+		String tituloTrim=txt_titulo.trim();
+		String autorTrim= txt_autor.trim();
+		if (!tituloTrim.isEmpty() && !autorTrim.isEmpty()) {
+			JOptionPane.showMessageDialog(null,"Se agrego el Libro","Proceso Completado",JOptionPane.INFORMATION_MESSAGE);
+			UILibros.listaLibros.add(new Libros(tituloTrim,autorTrim));
+			this.dispose();
+		} else if (tituloTrim.isEmpty() || autorTrim.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "No se deben dejar campos vacios", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		
 	}
 }
