@@ -34,12 +34,9 @@ public class UILibros_agregar extends JFrame{
 		InitComponents();
 		getContentPane().add(panel);
 	}
-<<<<<<< HEAD
-	private void InitComponents() {
-=======
-	 private void InitComponents() {
 
->>>>>>> c3aa97ac307968fd667bf3a3eff24f80b3e85e0b
+	private void InitComponents() {
+
 		panel = new JPanel(layout);
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(5, 5, 5, 5);
@@ -94,22 +91,15 @@ public class UILibros_agregar extends JFrame{
 	public void agregarArrayList(String txt_titulo,String txt_autor) {
 		String tituloTrim=txt_titulo.trim();
 		String autorTrim= txt_autor.trim();
-<<<<<<< HEAD
 		ArrayList <String> errores = new ArrayList<>();
-=======
-		ArrayList <String> errores= new ArrayList<>();
->>>>>>> c3aa97ac307968fd667bf3a3eff24f80b3e85e0b
 		String [] listaErrores;
 		
 		
 		if (!tituloTrim.isEmpty() && !autorTrim.isEmpty()) {
 			JOptionPane.showMessageDialog(null,"Se agrego el Libro","Proceso Completado",JOptionPane.INFORMATION_MESSAGE);
-<<<<<<< HEAD
 			Principal.listaLibros.add(new Libros(tituloTrim,autorTrim));
 			principal.actualizarTablaLibros();
-=======
-			UILibros.listaLibros.add(new Libros(tituloTrim,autorTrim));
->>>>>>> c3aa97ac307968fd667bf3a3eff24f80b3e85e0b
+			Principal.listaLibros.add(new Libros(tituloTrim,autorTrim));
 			this.dispose();
 		}
 		if (tituloTrim.isEmpty()) {
