@@ -129,15 +129,25 @@ public class UIPrestamos_agregar extends JFrame{
 			errores.add("•La fecha esta erronea");
 		}
 		if (errores.isEmpty()) {
+<<<<<<< HEAD
 			Principal.listaPrestamos.add(new Prestamos(usuario, libro, fVencimiento));
 			principal.actualizarTablaPrestamos();
 			this.dispose();
+=======
+			 UIPrestamos.listaPrestamos.add(new Prestamos(usuario, libro, fVencimiento));
+			 this.dispose();
+>>>>>>> c3aa97ac307968fd667bf3a3eff24f80b3e85e0b
 		} else {
 			listaErrores = errores.toArray(new String[0]);
 			JOptionPane.showMessageDialog(null, listaErrores,"Error",JOptionPane.ERROR_MESSAGE);
 		}
+<<<<<<< HEAD
 	}
 
+=======
+		
+	}
+>>>>>>> c3aa97ac307968fd667bf3a3eff24f80b3e85e0b
 	public boolean validaFecha(String fVencimientoTrim) {
 		Boolean flag=false; 
 		if (fVencimientoTrim.matches("^(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[0-2])/\\d{4}$")) {

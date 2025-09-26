@@ -93,6 +93,7 @@ public class UILibros_modificar extends JFrame{
 			String tituloTrim=txt_titulo.trim();
 			String autorTrim= txt_autor.trim();
 			if (!tituloTrim.isEmpty() && !autorTrim.isEmpty()) {
+<<<<<<< HEAD
 				if (Principal.listaLibros.get(indiceLibro).getTitulo().equals(tituloTrim) &&
 					Principal.listaLibros.get(indiceLibro).getAutor().equals(autorTrim)) {
 					JOptionPane.showMessageDialog(null, "No se ha modificado nada", null, JOptionPane.WARNING_MESSAGE);
@@ -101,6 +102,15 @@ public class UILibros_modificar extends JFrame{
 					Principal.listaLibros.get(indiceLibro).setTitulo(tituloTrim);
 					Principal.listaLibros.get(indiceLibro).setAutor(autorTrim);
 					principal.actualizarTablaLibros();
+=======
+				if (UILibros.listaLibros.get(indiceLibro).getTitulo().equals(tituloTrim) &&
+					UILibros.listaLibros.get(indiceLibro).getAutor().equals(autorTrim)) {
+					JOptionPane.showMessageDialog(null, "No se ha modificado nada", null, JOptionPane.WARNING_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(null,"Se modifico el Libro","Proceso Completado",JOptionPane.INFORMATION_MESSAGE);
+					UILibros.listaLibros.get(indiceLibro).setTitulo(tituloTrim);
+					UILibros.listaLibros.get(indiceLibro).setAutor(autorTrim);
+>>>>>>> c3aa97ac307968fd667bf3a3eff24f80b3e85e0b
 					this.dispose();
 				}
 			} else if (tituloTrim.isEmpty() || autorTrim.isEmpty()) {
