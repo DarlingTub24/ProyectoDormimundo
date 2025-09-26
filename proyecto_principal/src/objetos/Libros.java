@@ -1,18 +1,24 @@
 package objetos;
 
-public class Libros {
+public class Libros implements java.io.Serializable{
+	private static final long serialVersionUID = 1L;
+
 	private String nombre;
 	private String autor;
-	boolean prestado;
+	boolean prestado = false;
 	public Libros(String nombre, String autor,boolean prestado) {
 		this.nombre=nombre;
 		this.autor=autor;
 		this.prestado=prestado;
 	}
-	public String getNombre() {
+	public Libros(String nombre, String autor) {
+		this.nombre=nombre;
+		this.autor=autor;
+	}
+	public String getTitulo() {
 		return nombre;
 	}
-	public void setNombre(String nombre) {
+	public void setTitulo(String nombre) {
 		this.nombre = nombre;
 	}
 	public String getAutor() {
@@ -27,5 +33,8 @@ public class Libros {
 	public void setPrestado(boolean prestado) {
 		this.prestado = prestado;
 	}	
+	public String toString() {
+		return (nombre + " - " + autor);
+	}
 	
 }

@@ -3,14 +3,15 @@ package objetos;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class Prestamos {
-		private Usuarios usuario;
-		private Libros libro;
-		private String fecha_Prestamo;
-		private String fecha_Vencimiento;
-		private String fecha_Devolucion;
-		private DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		
+public class Prestamos implements java.io.Serializable {
+	private static final long serialVersionUID = 1L;
+	private Usuarios usuario;
+	private Libros libro;
+	private String fecha_Prestamo;
+	private String fecha_Vencimiento;
+	private String fecha_Devolucion;
+	private transient DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	
 		public Prestamos(Usuarios usuario, Libros libro, String fecha_Vencimiento) {
 			super();
 			this.usuario = usuario;
@@ -60,6 +61,18 @@ public class Prestamos {
 		}
 		public void setFecha_Vencimiento(String fecha_Vencimiento) {
 			this.fecha_Vencimiento = fecha_Vencimiento;
+		}
+		public boolean isVencido() {
+			System.out.println("Esta vencido");
+			if (fecha_Devolucion == null) {
+				if (LocalDate.now().isAfter(LocalDate.parse(fecha_Devolucion,formato))) {
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
 		}
 		
 		

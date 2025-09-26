@@ -6,11 +6,13 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -25,8 +27,10 @@ public class UIPrestamos_agregar extends JFrame{
 	private JLabel usuario,libro,vencimiento;
 	private JComboBox<Libros> comboBoxLibros;
 	private JComboBox<Usuarios> comboBoxUsuarios;
+	private Principal principal;
 	
-	public UIPrestamos_agregar() {
+	public UIPrestamos_agregar(Principal principal) {
+		this.principal = principal;
 		setTitle("Agregar Prestamos");
 		setSize(700,450);
 		setLocationRelativeTo(null);
@@ -52,7 +56,7 @@ public class UIPrestamos_agregar extends JFrame{
 		//Insertar ComboBoxUsuarios
 		gbc.gridx=1;
 		gbc.gridy=0;
-		comboBoxUsuarios = new JComboBox<>(UIPrestamos.listaUsuarios.toArray(new Usuarios[0]));
+		comboBoxUsuarios = new JComboBox<>(Principal.listaUsuarios.toArray(new Usuarios[0]));
 		comboBoxUsuarios.setSelectedIndex(-1);
 		panel.add(comboBoxUsuarios,gbc);
 		
@@ -68,8 +72,9 @@ public class UIPrestamos_agregar extends JFrame{
 		gbc.gridx=1;
 		gbc.gridy=1;
 		comboBoxLibros = new JComboBox<>();
-		for (Libros libro : UIPrestamos.listaLibros) {
+		for (Libros libro : Principal.listaLibros) {
 			if (libro.isPrestado()==false) {
+				System.out.println("hola manolo");
 				comboBoxLibros.addItem(libro);
 			}
 		}
@@ -108,7 +113,36 @@ public class UIPrestamos_agregar extends JFrame{
 	}
 
 	public void agregarArrayList(Usuarios usuario, Libros libro, String fVencimiento) {
-		 UIPrestamos.listaPrestamos.add(new Prestamos(usuario, libro, fVencimiento));
-		 this.dispose();
+		String fVencimientoTrim = fVencimiento.trim();
+		ArrayList<String> errores = new ArrayList<>();
+		boolean fechaValida = validaFecha(fVencimientoTrim);
+		String[] listaErrores;
+		if (usuario==null ) {
+			errores.add("•Seleccione un Usuario de la lista");
+		}
+		if (libro==null) {
+			errores.add("•Seleccione un Libro de la lista");
+		}
+		if (fVencimientoTrim.isEmpty()) {
+			errores.add("•Ingrese una fecha de Vencimiento");
+		} else if (!fechaValida) {
+			errores.add("•La fecha esta erronea");
+		}
+		if (errores.isEmpty()) {
+			Principal.listaPrestamos.add(new Prestamos(usuario, libro, fVencimiento));
+			principal.actualizarTablaPrestamos();
+			this.dispose();
+		} else {
+			listaErrores = errores.toArray(new String[0]);
+			JOptionPane.showMessageDialog(null, listaErrores,"Error",JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	public boolean validaFecha(String fVencimientoTrim) {
+		Boolean flag=false; 
+		if (fVencimientoTrim.matches("^(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[0-2])/\\d{4}$")) {
+			flag=true;
+		}
+		return flag;
 	}
 }

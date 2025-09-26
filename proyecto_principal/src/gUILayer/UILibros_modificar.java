@@ -10,6 +10,7 @@ import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -21,8 +22,10 @@ public class UILibros_modificar extends JFrame{
 		private JButton boton_modificar;
 		private int indiceLibro;
 		private JLabel titulo,autor;
+		private Principal principal;
 
-		public UILibros_modificar(int indice) {
+		public UILibros_modificar(int indice, Principal principal) {
+			this.principal = principal;
 			indiceLibro=indice;
 			setTitle("Modificar Libro");
 			setSize(700,450);
@@ -47,7 +50,7 @@ public class UILibros_modificar extends JFrame{
 			titulo.setFont(new Font("Arial", Font.PLAIN, 24));
 			panel.add(titulo,gbc);
 			//Insertar JTextField
-			JTextField txt_titulo = new JTextField(UILibros.listaLibros.get(indiceLibro).getTitulo(),10);
+			JTextField txt_titulo = new JTextField(Principal.listaLibros.get(indiceLibro).getTitulo(),10);
 			gbc.gridx = 1;
 			gbc.gridy = 0;
 			gbc.fill= GridBagConstraints.HORIZONTAL;
@@ -62,7 +65,7 @@ public class UILibros_modificar extends JFrame{
 			autor.setFont(new Font("Arial", Font.PLAIN, 24));
 			panel.add(autor,gbc);
 			//Insertar JTextField
-			JTextField txt_autor = new JTextField(UILibros.listaLibros.get(indiceLibro).getAutor(),10);
+			JTextField txt_autor = new JTextField(Principal.listaLibros.get(indiceLibro).getAutor(),10);
 			gbc.gridx = 1;
 			gbc.gridy = 1;
 			gbc.fill= GridBagConstraints.HORIZONTAL;
@@ -85,9 +88,24 @@ public class UILibros_modificar extends JFrame{
 			add(panel);
 			
 		}
+		
 		public void modificarArrayList(String txt_titulo,String txt_autor) {
-			UILibros.listaLibros.get(indiceLibro).setTitulo(txt_titulo);
-			UILibros.listaLibros.get(indiceLibro).setAutor(txt_autor);
-			this.dispose();
+			String tituloTrim=txt_titulo.trim();
+			String autorTrim= txt_autor.trim();
+			if (!tituloTrim.isEmpty() && !autorTrim.isEmpty()) {
+				if (Principal.listaLibros.get(indiceLibro).getTitulo().equals(tituloTrim) &&
+					Principal.listaLibros.get(indiceLibro).getAutor().equals(autorTrim)) {
+					JOptionPane.showMessageDialog(null, "No se ha modificado nada", null, JOptionPane.WARNING_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(null,"Se modifico el Libro","Proceso Completado",JOptionPane.INFORMATION_MESSAGE);
+					Principal.listaLibros.get(indiceLibro).setTitulo(tituloTrim);
+					Principal.listaLibros.get(indiceLibro).setAutor(autorTrim);
+					principal.actualizarTablaLibros();
+					this.dispose();
+				}
+			} else if (tituloTrim.isEmpty() || autorTrim.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "No se deben dejar campos vacios", "Error", JOptionPane.ERROR_MESSAGE);
+			}
+			
 		}
 }

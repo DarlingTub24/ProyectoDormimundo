@@ -6,10 +6,12 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -20,8 +22,10 @@ public class UILibros_agregar extends JFrame{
 	private GridBagLayout layout = new GridBagLayout();
 	private JButton boton_agregar;
 	private JLabel titulo,autor;
+	private Principal principal;
 
-	public UILibros_agregar() {
+	public UILibros_agregar(Principal principal) {
+		this.principal = principal;
 		setTitle("Agregar Libros");
 		setSize(700,450);
 		setLocationRelativeTo(null);
@@ -30,7 +34,7 @@ public class UILibros_agregar extends JFrame{
 		InitComponents();
 		getContentPane().add(panel);
 	}
-	 private void InitComponents() {
+	private void InitComponents() {
 		panel = new JPanel(layout);
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(5, 5, 5, 5);
@@ -81,9 +85,26 @@ public class UILibros_agregar extends JFrame{
 			panel.setBackground(Color.pink);
 			panel.setPreferredSize(new Dimension(400, 300));
 			add(panel);
-	 }
+	}
 	public void agregarArrayList(String txt_titulo,String txt_autor) {
-		UILibros.listaLibros.add(new Libros(txt_titulo,txt_autor));
-		this.dispose();
+		String tituloTrim=txt_titulo.trim();
+		String autorTrim= txt_autor.trim();
+		ArrayList <String> errores = new ArrayList<>();
+		String [] listaErrores;
+		
+		
+		if (!tituloTrim.isEmpty() && !autorTrim.isEmpty()) {
+			JOptionPane.showMessageDialog(null,"Se agrego el Libro","Proceso Completado",JOptionPane.INFORMATION_MESSAGE);
+			Principal.listaLibros.add(new Libros(tituloTrim,autorTrim));
+			principal.actualizarTablaLibros();
+			this.dispose();
+		}
+		if (tituloTrim.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "No se deben dejar campos vacios", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		if (autorTrim.isEmpty()) {
+			
+		}
+		
 	}
 }

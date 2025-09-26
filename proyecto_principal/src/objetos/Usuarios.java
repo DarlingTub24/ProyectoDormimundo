@@ -1,6 +1,7 @@
 package objetos;
 
-public class Usuarios {
+public class Usuarios implements java.io.Serializable {
+	private static final long serialVersionUID = 1L;
 	private String nombre;
 	private String id;
 	
@@ -23,5 +24,9 @@ public class Usuarios {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String toString() {
+		return id + " - " + nombre;
 	}
 }

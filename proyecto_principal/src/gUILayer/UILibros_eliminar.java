@@ -17,6 +17,7 @@ public class UILibros_eliminar extends JFrame {
 	private JButton boton_Si,boton_No;
 	private int indiceLibro;
 	private JLabel aviso;
+
 	public UILibros_eliminar(int indice) {
 		indiceLibro=indice;
 		setTitle("Eliminar Libro");
@@ -66,7 +67,7 @@ public class UILibros_eliminar extends JFrame {
 		
 	}
 	public void eliminarLibro(int indice) {
-		UILibros.listaLibros.remove(indice);
+		Principal.listaLibros.remove(indice);
 		this.dispose();
 	}
 }

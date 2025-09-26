@@ -68,10 +68,10 @@ public class UIPrestamos_devolver extends JFrame{
 	}
 	public void devolverLibro(int indice) {
 		//Aqui nomas se cambia por el nombre correcto de los Arraylist y de que clase vienen
-		UILibros.listaLibros.get(indice).setPrestado(false);
-		for (int i = 0; i < UIPrestamos.listaPrestamos.size(); i++) {
-			if (UIPrestamos.listaPrestamos.get(i).getLibro().isPrestado()==false) {
-				UIPrestamos.listaPrestamos.remove(i);
+		Principal.listaLibros.get(indice).setPrestado(false);
+		for (int i = 0; i < Principal.listaPrestamos.size(); i++) {
+			if (Principal.listaPrestamos.get(i).getLibro().isPrestado()==false) {
+				Principal.listaPrestamos.remove(i);
 			}
 		}
 		
