@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -32,6 +33,7 @@ public class UILibros_agregar extends JFrame{
 		getContentPane().add(panel);
 	}
 	 private void InitComponents() {
+
 		panel = new JPanel(layout);
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(5, 5, 5, 5);
@@ -86,12 +88,20 @@ public class UILibros_agregar extends JFrame{
 	public void agregarArrayList(String txt_titulo,String txt_autor) {
 		String tituloTrim=txt_titulo.trim();
 		String autorTrim= txt_autor.trim();
+		ArrayList <String> errores= new ArrayList<>();
+		String [] listaErrores;
+		
+		
 		if (!tituloTrim.isEmpty() && !autorTrim.isEmpty()) {
 			JOptionPane.showMessageDialog(null,"Se agrego el Libro","Proceso Completado",JOptionPane.INFORMATION_MESSAGE);
 			UILibros.listaLibros.add(new Libros(tituloTrim,autorTrim));
 			this.dispose();
-		} else if (tituloTrim.isEmpty() || autorTrim.isEmpty()) {
+		}
+		if (tituloTrim.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "No se deben dejar campos vacios", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		if (autorTrim.isEmpty()) {
+			
 		}
 		
 	}

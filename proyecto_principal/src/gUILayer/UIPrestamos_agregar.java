@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -112,6 +113,7 @@ public class UIPrestamos_agregar extends JFrame{
 		String fVencimientoTrim = fVencimiento.trim();
 		ArrayList<String> errores = new ArrayList<>();
 		boolean fechaValida = validaFecha(fVencimientoTrim);
+		String[] listaErrores;
 		if (usuario==null ) {
 			errores.add("•Seleccione un Usuario de la lista");
 		}
@@ -120,13 +122,15 @@ public class UIPrestamos_agregar extends JFrame{
 		}
 		if (fVencimientoTrim.isEmpty()) {
 			errores.add("•Ingrese una fecha de Vencimiento");
-		}
-		if (!fechaValida) {
+		} else if (!fechaValida) {
 			errores.add("•La fecha esta erronea");
 		}
 		if (errores.isEmpty()) {
 			 UIPrestamos.listaPrestamos.add(new Prestamos(usuario, libro, fVencimiento));
 			 this.dispose();
+		} else {
+			listaErrores = errores.toArray(new String[0]);
+			JOptionPane.showMessageDialog(null, listaErrores,"Error",JOptionPane.ERROR_MESSAGE);
 		}
 		
 	}
