@@ -50,7 +50,7 @@ public class Principal extends JFrame implements ActionListener {
 	private JMenuItem jmiabrir, jmiguardar, jmisalir;
 	private JToolBar jtbsecciones;
 	private JButton btnlibros, btnusuarios, btnprestamos, btnsalir;
-    private JButton btnagregarRegistro, btneliminarPrestamo, btnmodificarPrestamo;
+    private JButton btnagregarRegistro, btnEliminarRegistro, btnmodificarPrestamo;
     public static ArrayList<Libros> listaLibros;
     public static ArrayList<Prestamos> listaPrestamos;
     public static ArrayList<Usuarios> listaUsuarios;
@@ -111,9 +111,10 @@ public class Principal extends JFrame implements ActionListener {
         jpAgregarQuitar = new JPanel();
         btnagregarRegistro = new JButton("Agregar");
         btnagregarRegistro.addActionListener(this);
-        btneliminarPrestamo = new JButton("Eliminar");
+        btnEliminarRegistro = new JButton("Devolver");
+        btnEliminarRegistro.addActionListener(this);
         jpAgregarQuitar.add(btnagregarRegistro);
-        jpAgregarQuitar.add(btneliminarPrestamo);
+        jpAgregarQuitar.add(btnEliminarRegistro);
         this.add(jpAgregarQuitar, BorderLayout.SOUTH);
     }
 
@@ -158,11 +159,17 @@ public class Principal extends JFrame implements ActionListener {
     public void contenidoLibros(){
         // Columnas
         String[] columnas = {"Nombre del Libro", "Autor"};
-        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // ninguna celda editable
+            }
+        };
         
         // Llenar el modelo
         for (Libros libro : listaLibros) {
             modelo.addRow(new Object[]{libro.getTitulo(), libro.getAutor()});
+            libro.setPrestado(false);
         }
 
         JTable tabla = new JTable(modelo);
@@ -177,10 +184,16 @@ public class Principal extends JFrame implements ActionListener {
     public void actualizarTablaLibros() {
         jplibros.removeAll(); // Limpia el panel
         String[] columnas = {"Nombre del Libro", "Autor"};
-        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // ninguna celda editable
+            }
+        };
 
         for (Libros libro : listaLibros) {
             modelo.addRow(new Object[]{libro.getTitulo(), libro.getAutor()});
+            
         }
 
         JTable tabla = new JTable(modelo);
@@ -197,7 +210,13 @@ public class Principal extends JFrame implements ActionListener {
     public void contenidousuarios(){
         // Columnas
         String[] columnas = {"No. Identificador", "Usuario"};
-        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0){
+            @Override
+                public boolean isCellEditable(int row, int column) {
+                return false; // ninguna celda editable
+            }
+        };
+
         System.out.println("Tamaño de la lista de usuarios: " + listaUsuarios.size());
         // Llenar el modelo
         for (Usuarios usuario : listaUsuarios) {
@@ -216,7 +235,12 @@ public class Principal extends JFrame implements ActionListener {
         public void actualizarTablaUsuarios() {
         jpusuarios.removeAll(); // Limpia el panel
         String[] columnas = {"No. Identificador", "Usuario"};
-        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+            DefaultTableModel modelo = new DefaultTableModel(columnas, 0){
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false; // ninguna celda editable
+            }
+        };
 
         for (Usuarios usuario : listaUsuarios) {
             modelo.addRow(new Object[]{usuario.getId(), usuario.getNombre()});
@@ -236,17 +260,21 @@ public class Principal extends JFrame implements ActionListener {
     public void contenidoPrestamos(){
         quePanel = "Prestamos";
         // Columnas
-        String[] columnas = {"Nombre del Libro", "Nombre del autor", "Fecha de prestamo", "Fecha de regreso", "Solicitado por", "Estado"};
-        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
-        
+        String[] columnas = {"Nombre del Libro", "Nombre del autor", "Fecha de prestamo", "Fecha de regreso límite", "Solicitado por", "Estado"};
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0){
+            @Override
+                public boolean isCellEditable(int row, int column) {
+                return false; // ninguna celda editable
+            }
+        };
         // Llenar el modelo
         for (Prestamos prestamo : listaPrestamos) {
             modelo.addRow(new Object[]{prestamo.getLibro().getTitulo(),
             prestamo.getLibro().getAutor(),
             prestamo.getFecha_Prestamo(),
-            prestamo.getFecha_Devolucion(), 
+            prestamo.getFecha_Vencimiento(), 
             prestamo.getUsuario().getNombre(),
-            prestamo.isVencido() ? "A tiempo" : "Vencido" } );
+            prestamo.isVencido() ? "Vencido" : "A tiempo" } );
             System.out.println("Prestamo cargado: " + prestamo.getLibro().getTitulo() + " - " + prestamo.getUsuario().getNombre());
         }
 
@@ -261,24 +289,32 @@ public class Principal extends JFrame implements ActionListener {
     public void actualizarTablaPrestamos() {
         jpprestamos.removeAll(); // Limpia el panel
         // Columnas
-        String[] columnas = {"Nombre del Libro", "Estado", "Fecha de prestamo", "Fecha de regreso", "Solicitado por", "columna" };
-        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+        String[] columnas = {"Nombre del Libro", "Estado", "Fecha de prestamo", "Fecha de regreso límite", "Solicitado por", "columna" };
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0){
+            @Override
+                public boolean isCellEditable(int row, int column) {
+                return false; // ninguna celda editable
+            }
+        };
         
         // Llenar el modelo
         for (Prestamos prestamo : listaPrestamos) {
             modelo.addRow(new Object[]{prestamo.getLibro().getTitulo(),
-            prestamo.getLibro().getAutor(), "estado", prestamo.getFecha_Prestamo(),
-            prestamo.getFecha_Devolucion(), prestamo.getUsuario().getNombre(), "columna"} );
+            prestamo.getLibro().getAutor(),
+            prestamo.getFecha_Prestamo(),
+            prestamo.getFecha_Vencimiento(), 
+            prestamo.getUsuario().getNombre(),
+            prestamo.isVencido() ? "A tiempo" : "Vencido" } );
         }
         JTable tabla = new JTable(modelo);
         JScrollPane scrollPane = new JScrollPane(tabla);
 
         JLabel titulo = new JLabel("Lista de Libros");
-        jplibros.add(titulo, BorderLayout.NORTH);
-        jplibros.add(scrollPane, BorderLayout.CENTER);
+        jpprestamos.add(titulo, BorderLayout.NORTH);
+        jpprestamos.add(scrollPane, BorderLayout.CENTER);
 
-        jplibros.revalidate();
-        jplibros.repaint();
+        jpprestamos.revalidate();
+        jpprestamos.repaint();
     }
 
 
@@ -296,13 +332,19 @@ public class Principal extends JFrame implements ActionListener {
 			}
 		} else if (e.getSource() == btnlibros){
             cardlayout.show(jpprincipal, "Libros");
+            btnEliminarRegistro.setText("Eliminar");
             quePanel = "Libros";
+
         } else if(e.getSource() == btnprestamos) {
             cardlayout.show(jpprincipal, "Prestamos");
+            btnEliminarRegistro.setText("Devolver");
             quePanel = "Prestamos";
+
         } else if (e.getSource() == btnusuarios) {
             cardlayout.show(jpprincipal, "Usuarios");
+            btnEliminarRegistro.setText("Eliminar");
             quePanel = "Usuarios";
+
         } else if (e.getSource() == btnagregarRegistro) {
             if (quePanel == "Prestamos") {
                 //Abrir ventana agregar prestamos
@@ -324,8 +366,20 @@ public class Principal extends JFrame implements ActionListener {
                 agregarUsuario.setVisible(true);
             }
 
-        } else if (e.getSource() == btneliminarPrestamo){
-            
+        } else if (e.getSource() == btnEliminarRegistro){
+            System.out.println("hola eliminar");
+            if (quePanel == "Prestamos"){
+                UIPrestamos_devolver devolverPrestamo = new UIPrestamos_devolver(this);
+                devolverPrestamo.setVisible(true);
+            }
+            else if (quePanel == "Libros"){
+                UILibros_eliminar eliminarLibro = new UILibros_eliminar(this);
+                eliminarLibro.setVisible(true);
+            }
+            else if (quePanel == "Usuarios"){
+                UIUsuario_eliminar eliminarUsuario = new UIUsuario_eliminar(this);
+                eliminarUsuario.setVisible(true);
+            }
         }
         else if (e.getSource() == jmisalir) {
                 System.exit(0);

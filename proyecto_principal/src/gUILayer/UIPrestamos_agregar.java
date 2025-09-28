@@ -20,7 +20,7 @@ import objetos.Libros;
 import objetos.Prestamos;
 import objetos.Usuarios;
 
-public class UIPrestamos_agregar extends JFrame{
+public class UIPrestamos_agregar extends JFrame {
 	private JPanel panel;
 	private GridBagLayout layout = new GridBagLayout();
 	private JButton boton_agregar;
@@ -74,7 +74,6 @@ public class UIPrestamos_agregar extends JFrame{
 		comboBoxLibros = new JComboBox<>();
 		for (Libros libro : Principal.listaLibros) {
 			if (libro.isPrestado()==false) {
-				System.out.println("hola manolo");
 				comboBoxLibros.addItem(libro);
 			}
 		}
@@ -128,10 +127,10 @@ public class UIPrestamos_agregar extends JFrame{
 		} else if (!fechaValida) {
 			errores.add("•La fecha esta erronea");
 		}
-		if (errores.isEmpty()) {			Principal.listaPrestamos.add(new Prestamos(usuario, libro, fVencimiento));
-			principal.actualizarTablaPrestamos();
-			this.dispose();
+		if (errores.isEmpty()) {
 			Principal.listaPrestamos.add(new Prestamos(usuario, libro, fVencimiento));
+			principal.actualizarTablaPrestamos();
+			System.out.println("Se agrego el Prestamo");
 			this.dispose();
 		} else {
 			listaErrores = errores.toArray(new String[0]);

@@ -99,14 +99,10 @@ public class UILibros_agregar extends JFrame{
 			JOptionPane.showMessageDialog(null,"Se agrego el Libro","Proceso Completado",JOptionPane.INFORMATION_MESSAGE);
 			Principal.listaLibros.add(new Libros(tituloTrim,autorTrim));
 			principal.actualizarTablaLibros();
-			Principal.listaLibros.add(new Libros(tituloTrim,autorTrim));
 			this.dispose();
 		}
 		if (tituloTrim.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "No se deben dejar campos vacios", "Error", JOptionPane.ERROR_MESSAGE);
-		}
-		if (autorTrim.isEmpty()) {
-			
 		}
 		
 	}
