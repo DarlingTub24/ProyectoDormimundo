@@ -10,12 +10,12 @@ public class Prestamos implements java.io.Serializable {
 	private String fecha_Prestamo;
 	private String fecha_Vencimiento;
 	private String fecha_Devolucion;
-	private transient DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	private transient DateTimeFormatter formato = DateTimeFormatter.ofPattern("d/M/yyyy");
 	
 		public Prestamos(Usuarios usuario, Libros libro, String fecha_Vencimiento) {
 			super();
 			this.usuario = usuario;
-			formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			formato = DateTimeFormatter.ofPattern("d/M/yyyy");
 			this.libro = libro;
 			this.fecha_Prestamo = LocalDate.now().format(formato);
 			this.setFecha_Vencimiento(fecha_Vencimiento);
@@ -23,7 +23,7 @@ public class Prestamos implements java.io.Serializable {
 			this.libro.setPrestado(true);
 		}
 		public void devolver() {
-			formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			formato = DateTimeFormatter.ofPattern("d/M/yyyy");
 			/*
 			if (!LocalDate.now().isAfter(LocalDate.parse(fecha_Vencimiento,formato))) {
 				this.fecha_Devolucion=LocalDate.now().format(formato);
@@ -71,11 +71,9 @@ public class Prestamos implements java.io.Serializable {
 			this.fecha_Vencimiento = fecha_Vencimiento;
 		}
 		public boolean isVencido() {
-			DateTimeFormatter formato2 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-			System.out.println("hola "+ fecha_Vencimiento);
+			DateTimeFormatter formato2 = DateTimeFormatter.ofPattern("d/M/yyyy");
 			if (fecha_Vencimiento != null) {
 				if (LocalDate.now().isAfter(LocalDate.parse(fecha_Vencimiento.trim(),formato2))) {
-					System.out.println("no Esta vencido");
 					return true;
 				}
 			}

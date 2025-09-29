@@ -29,16 +29,16 @@ public class UILibros_modificar extends JFrame{
 	private JTextField txt_titulo,txt_autor;
 	private Principal principal;
 
-	public UILibros_modificar(Principal principal) {
-		this.principal = principal;
-		setTitle("Modificar Libro");
-		setSize(700,450);
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setLayout(new GridBagLayout());
-		InitComponents();
-		getContentPane().add(panel);
-	}
+			public UILibros_modificar(Principal principal) {
+			this.principal = principal;
+			setTitle("Modificar Libro");
+			setSize(700,450);
+			setLocationRelativeTo(null);
+			setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			setLayout(new GridBagLayout());
+			InitComponents();
+			getContentPane().add(panel);
+		}
 
 	private void InitComponents() {
 		panel = new JPanel(layout);
@@ -115,14 +115,15 @@ public class UILibros_modificar extends JFrame{
 		panel.setBackground(Color.pink);
 		panel.setPreferredSize(new Dimension(400, 300));
 		add(panel);
+		
 	}
-
 	public void modificarArrayList(String txt_titulo,String txt_autor, Libros libroModificar) {
 		String tituloTrim=txt_titulo.trim();
 		String autorTrim= txt_autor.trim();
 		
 		for (int i = 0; i < Principal.listaLibros.size(); i++) {
 			if (Principal.listaLibros.get(i).equals(libroModificar)) {
+				
 				if (!tituloTrim.isEmpty() && !autorTrim.isEmpty()) {
 					if (Principal.listaLibros.get(i).getTitulo().equals(tituloTrim) &&
 						Principal.listaLibros.get(i).getAutor().equals(autorTrim)) {

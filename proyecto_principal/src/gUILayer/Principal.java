@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
@@ -47,10 +48,10 @@ public class Principal extends JFrame implements ActionListener {
     private String quePanel;
 	private JMenuBar menuprincipal;
 	private JMenu jmarchivo;
-	private JMenuItem jmiabrir, jmiguardar, jmisalir;
+	private JMenuItem jmiabrir, jmisalir;
 	private JToolBar jtbsecciones;
-	private JButton btnlibros, btnusuarios, btnprestamos, btnsalir;
-    private JButton btnagregarRegistro, btnEliminarRegistro, btnmodificarPrestamo;
+	private JButton btnlibros, btnusuarios, btnprestamos;
+    private JButton btnagregarRegistro, btnEliminarRegistro, btnmodificarRegistro;
     public static ArrayList<Libros> listaLibros;
     public static ArrayList<Prestamos> listaPrestamos;
     public static ArrayList<Usuarios> listaUsuarios;
@@ -66,7 +67,7 @@ public class Principal extends JFrame implements ActionListener {
 			@Override
 			public void windowClosing(WindowEvent e) {
                 guardarDatos();
-				System.exit(0);
+				salir();
 			}
 
 		});
@@ -85,9 +86,6 @@ public class Principal extends JFrame implements ActionListener {
         jmiabrir = new JMenuItem("Abrir", 'A');
         jmiabrir.addActionListener(this);
         jmarchivo.add(jmiabrir);
-        jmiguardar = new JMenuItem("Guardar", 'G');
-        jmiguardar.addActionListener(this);
-        jmarchivo.add(jmiguardar);
         jmarchivo.addSeparator();
         jmisalir = new JMenuItem("Salir", 'S');
         jmisalir.addActionListener(this);
@@ -108,14 +106,7 @@ public class Principal extends JFrame implements ActionListener {
         jpprincipal.add(jpusuarios, "Usuarios");
         this.add(jpprincipal, BorderLayout.CENTER);
 
-        jpAgregarQuitar = new JPanel();
-        btnagregarRegistro = new JButton("Agregar");
-        btnagregarRegistro.addActionListener(this);
-        btnEliminarRegistro = new JButton("Devolver");
-        btnEliminarRegistro.addActionListener(this);
-        jpAgregarQuitar.add(btnagregarRegistro);
-        jpAgregarQuitar.add(btnEliminarRegistro);
-        this.add(jpAgregarQuitar, BorderLayout.SOUTH);
+        contenidoBarraNavegacion();
     }
 
 	private void contenidoToolBar() {
@@ -143,19 +134,33 @@ public class Principal extends JFrame implements ActionListener {
         btnusuarios.setBackground(Color.LIGHT_GRAY);
         jtbsecciones.add(btnusuarios);
 
-        jtbsecciones.add(new JSeparator(JSeparator.VERTICAL));
-        jtbsecciones.add(Box.createHorizontalGlue());
-        btnsalir = new JButton();
-        btnsalir.addActionListener(this);
-        btnsalir.setToolTipText("Salir de la aplicacion");
-        btnsalir.setBorderPainted(false);
-        btnsalir.setBackground(Color.LIGHT_GRAY);
-        jtbsecciones.add(btnsalir);
+        // jtbsecciones.add(new JSeparator(JSeparator.VERTICAL));
+        // jtbsecciones.add(Box.createHorizontalGlue());
+        // btnsalir = new JButton();
+        // btnsalir.addActionListener(this);
+        // btnsalir.setToolTipText("Salir de la aplicacion");
+        // btnsalir.setBorderPainted(false);
+        // btnsalir.setBackground(Color.LIGHT_GRAY);
+        // jtbsecciones.add(btnsalir);
 
 		this.add(jtbsecciones, "North");
     }
 
-    
+    private void contenidoBarraNavegacion(){
+        jpAgregarQuitar = new JPanel();
+        btnagregarRegistro = new JButton("Agregar");
+        btnagregarRegistro.addActionListener(this);
+        btnEliminarRegistro = new JButton("Devolver");
+        btnEliminarRegistro.addActionListener(this);
+        btnmodificarRegistro = new JButton("Modificar");
+        btnmodificarRegistro.addActionListener(this);
+        jpAgregarQuitar.add(btnagregarRegistro);
+        jpAgregarQuitar.add(btnEliminarRegistro);
+        jpAgregarQuitar.add(btnmodificarRegistro);
+        btnmodificarRegistro.setEnabled(false);
+        this.add(jpAgregarQuitar, BorderLayout.SOUTH);
+    }
+
     public void contenidoLibros(){
         // Columnas
         String[] columnas = {"Nombre del Libro", "Autor"};
@@ -217,7 +222,6 @@ public class Principal extends JFrame implements ActionListener {
             }
         };
 
-        System.out.println("Tamaño de la lista de usuarios: " + listaUsuarios.size());
         // Llenar el modelo
         for (Usuarios usuario : listaUsuarios) {
             modelo.addRow(new Object[]{usuario.getId(), usuario.getNombre()});
@@ -275,7 +279,6 @@ public class Principal extends JFrame implements ActionListener {
             prestamo.getFecha_Vencimiento(), 
             prestamo.getUsuario().getNombre(),
             prestamo.isVencido() ? "Vencido" : "A tiempo" } );
-            System.out.println("Prestamo cargado: " + prestamo.getLibro().getTitulo() + " - " + prestamo.getUsuario().getNombre());
         }
 
         JTable tabla = new JTable(modelo);
@@ -304,7 +307,7 @@ public class Principal extends JFrame implements ActionListener {
             prestamo.getFecha_Prestamo(),
             prestamo.getFecha_Vencimiento(), 
             prestamo.getUsuario().getNombre(),
-            prestamo.isVencido() ? "A tiempo" : "Vencido" } );
+            prestamo.isVencido() ? "Vencido" : "A tiempo" } );
         }
         JTable tabla = new JTable(modelo);
         JScrollPane scrollPane = new JScrollPane(tabla);
@@ -333,16 +336,19 @@ public class Principal extends JFrame implements ActionListener {
 		} else if (e.getSource() == btnlibros){
             cardlayout.show(jpprincipal, "Libros");
             btnEliminarRegistro.setText("Eliminar");
+            btnmodificarRegistro.setEnabled(true);
             quePanel = "Libros";
 
         } else if(e.getSource() == btnprestamos) {
             cardlayout.show(jpprincipal, "Prestamos");
             btnEliminarRegistro.setText("Devolver");
+            btnmodificarRegistro.setEnabled(false);
             quePanel = "Prestamos";
 
         } else if (e.getSource() == btnusuarios) {
             cardlayout.show(jpprincipal, "Usuarios");
             btnEliminarRegistro.setText("Eliminar");
+            btnmodificarRegistro.setEnabled(true);
             quePanel = "Usuarios";
 
         } else if (e.getSource() == btnagregarRegistro) {
@@ -367,7 +373,7 @@ public class Principal extends JFrame implements ActionListener {
             }
 
         } else if (e.getSource() == btnEliminarRegistro){
-            System.out.println("hola eliminar");
+
             if (quePanel == "Prestamos"){
                 UIPrestamos_devolver devolverPrestamo = new UIPrestamos_devolver(this);
                 devolverPrestamo.setVisible(true);
@@ -380,13 +386,31 @@ public class Principal extends JFrame implements ActionListener {
                 UIUsuario_eliminar eliminarUsuario = new UIUsuario_eliminar(this);
                 eliminarUsuario.setVisible(true);
             }
+        } else if (e.getSource() == btnmodificarRegistro){
+            if (quePanel == "Libros"){
+                UILibros_modificar modificarLibro = new UILibros_modificar(this);
+                modificarLibro.setVisible(true);
+            } else if (quePanel == "Usuarios"){
+                UIUsuario_modificar moidficarUsuario = new UIUsuario_modificar(this);
+                moidficarUsuario.setVisible(true);
+            }
         }
         else if (e.getSource() == jmisalir) {
-                System.exit(0);
+                salir();
             }
         
 		//else if (e.getSource() == )
 	}
+
+    private void salir() {
+        int resp = JOptionPane.showConfirmDialog(this, "Desea salir de la aplicacion?", "Salir de mi aplicacion", JOptionPane.YES_NO_OPTION);
+        if( resp == JOptionPane.NO_OPTION)
+            return;
+        
+        if( resp == JOptionPane.YES_OPTION){
+            System.exit(0);
+        }
+    }
 
 private void cargarDatos() {
     listaLibros = new ArrayList<>();
@@ -434,7 +458,6 @@ private void cargarDatos() {
         while (true) {
             Prestamos prestamo = (Prestamos) entrada.readObject();
             listaPrestamos.add(prestamo);
-            System.out.println("Prestamo cargado: " + prestamo.getLibro().getTitulo() + " - " + prestamo.getUsuario().getNombre());
         }
     } catch (EOFException e) {
         System.out.println("Fin de archivo PRESTAMOS alcanzado");
