@@ -71,7 +71,9 @@ public class UIUsuario_Agregar extends JFrame {
 			add(panel);
 	}
 	public void agregarArrayList(String txt_autor) {
-        String numUsuario = principal.listaUsuarios.size() + 1 + "";
+		String ultimoId = Principal.listaUsuarios.get(Principal.listaUsuarios.size()-1).getId();
+		int ultimoNumero = Integer.parseInt(ultimoId);
+        String numUsuario = (ultimoNumero + 1) + "";
 		Principal.listaUsuarios.add(new Usuarios(txt_autor, numUsuario));
 		principal.actualizarTablaUsuarios();
 		this.dispose();

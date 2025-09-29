@@ -1,7 +1,5 @@
 package gUILayer;
 
-import javax.swing.Box;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -12,10 +10,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
-import javax.swing.border.Border;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
@@ -30,7 +26,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -48,7 +43,7 @@ public class Principal extends JFrame implements ActionListener {
     private String quePanel;
 	private JMenuBar menuprincipal;
 	private JMenu jmarchivo;
-	private JMenuItem jmiabrir, jmisalir;
+	private JMenuItem jmiabrir, jmisalir, jmiguardar;
 	private JToolBar jtbsecciones;
 	private JButton btnlibros, btnusuarios, btnprestamos;
     private JButton btnagregarRegistro, btnEliminarRegistro, btnmodificarRegistro;
@@ -86,6 +81,11 @@ public class Principal extends JFrame implements ActionListener {
         jmiabrir = new JMenuItem("Abrir", 'A');
         jmiabrir.addActionListener(this);
         jmarchivo.add(jmiabrir);
+
+        jmiguardar = new JMenuItem("Guardar", 'A');
+        jmiguardar.addActionListener(this);
+        jmarchivo.add(jmiguardar);
+
         jmarchivo.addSeparator();
         jmisalir = new JMenuItem("Salir", 'S');
         jmisalir.addActionListener(this);
@@ -106,9 +106,9 @@ public class Principal extends JFrame implements ActionListener {
         jpprincipal.add(jpusuarios, "Usuarios");
         this.add(jpprincipal, BorderLayout.CENTER);
 
-        contenidoBarraNavegacion();
+        botonesModificaciones();
     }
-
+// Botones que llevan a las diferentes zonas del programa
 	private void contenidoToolBar() {
         jtbsecciones = new JToolBar();
         btnprestamos = new JButton("Prestamos");
@@ -133,20 +133,10 @@ public class Principal extends JFrame implements ActionListener {
         btnusuarios.setBorderPainted(false);
         btnusuarios.setBackground(Color.LIGHT_GRAY);
         jtbsecciones.add(btnusuarios);
-
-        // jtbsecciones.add(new JSeparator(JSeparator.VERTICAL));
-        // jtbsecciones.add(Box.createHorizontalGlue());
-        // btnsalir = new JButton();
-        // btnsalir.addActionListener(this);
-        // btnsalir.setToolTipText("Salir de la aplicacion");
-        // btnsalir.setBorderPainted(false);
-        // btnsalir.setBackground(Color.LIGHT_GRAY);
-        // jtbsecciones.add(btnsalir);
-
 		this.add(jtbsecciones, "North");
     }
-
-    private void contenidoBarraNavegacion(){
+// Botones para realizar las acciones
+    private void botonesModificaciones(){
         jpAgregarQuitar = new JPanel();
         btnagregarRegistro = new JButton("Agregar");
         btnagregarRegistro.addActionListener(this);
@@ -160,7 +150,7 @@ public class Principal extends JFrame implements ActionListener {
         btnmodificarRegistro.setEnabled(false);
         this.add(jpAgregarQuitar, BorderLayout.SOUTH);
     }
-
+    //crea la tabla de prestamos segun los archivos .dat
     public void contenidoLibros(){
         // Columnas
         String[] columnas = {"Nombre del Libro", "Autor"};
@@ -180,12 +170,12 @@ public class Principal extends JFrame implements ActionListener {
         JTable tabla = new JTable(modelo);
         JScrollPane scrollPane = new JScrollPane(tabla);
 
-        JLabel titulo = new JLabel("Lista de Libros");
+        JLabel titulo = new JLabel("Libros registrados");
         jplibros.add(titulo, BorderLayout.NORTH);
         jplibros.add(scrollPane, BorderLayout.CENTER);
         System.out.println("Libros cargados: " + listaLibros.size());
     }
-
+    //Recarga la tabla de Librps segun los archivos .dat
     public void actualizarTablaLibros() {
         jplibros.removeAll(); // Limpia el panel
         String[] columnas = {"Nombre del Libro", "Autor"};
@@ -211,7 +201,7 @@ public class Principal extends JFrame implements ActionListener {
         jplibros.revalidate();
         jplibros.repaint();
     }
-
+    //crea la tabla de prestamos segun los archivos .dat
     public void contenidousuarios(){
         // Columnas
         String[] columnas = {"No. Identificador", "Usuario"};
@@ -230,12 +220,12 @@ public class Principal extends JFrame implements ActionListener {
         JTable tabla = new JTable(modelo);
         JScrollPane scrollPane = new JScrollPane(tabla);
 
-        JLabel titulo = new JLabel("Lista de Usuarios");
+        JLabel titulo = new JLabel("Usuarios registrados");
         jpusuarios.add(titulo, BorderLayout.NORTH);
         jpusuarios.add(scrollPane, BorderLayout.CENTER);
         System.out.println("Usuarios cargados: " + listaUsuarios.size());
     }
-
+    //regarga la tabla de Usuarios segun los archivos .dat
         public void actualizarTablaUsuarios() {
         jpusuarios.removeAll(); // Limpia el panel
         String[] columnas = {"No. Identificador", "Usuario"};
@@ -261,6 +251,7 @@ public class Principal extends JFrame implements ActionListener {
         jpusuarios.repaint();
     }
 
+    //crea la tabla de prestamos segun los archivos .dat
     public void contenidoPrestamos(){
         quePanel = "Prestamos";
         // Columnas
@@ -284,11 +275,11 @@ public class Principal extends JFrame implements ActionListener {
         JTable tabla = new JTable(modelo);
         JScrollPane scrollPane = new JScrollPane(tabla);
 
-        JLabel titulo = new JLabel("Lista de Prestamos");
-        //jpprestamos.add(titulo, BorderLayout.NORTH);
+        JLabel titulo = new JLabel("Prestamos en curso");
+        jpprestamos.add(titulo, BorderLayout.NORTH);
         jpprestamos.add(scrollPane, BorderLayout.CENTER);
     }
-
+    //recarga la tabla de prestamos segun los archivos .dat
     public void actualizarTablaPrestamos() {
         jpprestamos.removeAll(); // Limpia el panel
         // Columnas
@@ -312,7 +303,7 @@ public class Principal extends JFrame implements ActionListener {
         JTable tabla = new JTable(modelo);
         JScrollPane scrollPane = new JScrollPane(tabla);
 
-        JLabel titulo = new JLabel("Lista de Libros");
+        JLabel titulo = new JLabel("Prestamos en curso");
         jpprestamos.add(titulo, BorderLayout.NORTH);
         jpprestamos.add(scrollPane, BorderLayout.CENTER);
 
@@ -373,7 +364,7 @@ public class Principal extends JFrame implements ActionListener {
             }
 
         } else if (e.getSource() == btnEliminarRegistro){
-
+            //Para saber sobre que lista se tiene que hacer la modificacion
             if (quePanel == "Prestamos"){
                 UIPrestamos_devolver devolverPrestamo = new UIPrestamos_devolver(this);
                 devolverPrestamo.setVisible(true);
@@ -394,14 +385,17 @@ public class Principal extends JFrame implements ActionListener {
                 UIUsuario_modificar moidficarUsuario = new UIUsuario_modificar(this);
                 moidficarUsuario.setVisible(true);
             }
+        } else if (e.getSource() == jmiguardar){
+            guardarDatos();
         }
+        
         else if (e.getSource() == jmisalir) {
                 salir();
             }
         
-		//else if (e.getSource() == )
 	}
 
+    //metodo para cerrar el programa
     private void salir() {
         int resp = JOptionPane.showConfirmDialog(this, "Desea salir de la aplicacion?", "Salir de mi aplicacion", JOptionPane.YES_NO_OPTION);
         if( resp == JOptionPane.NO_OPTION)
@@ -412,124 +406,126 @@ public class Principal extends JFrame implements ActionListener {
         }
     }
 
-private void cargarDatos() {
-    listaLibros = new ArrayList<>();
-    listaPrestamos = new ArrayList<>();
-    listaUsuarios = new ArrayList<>();
+    //carga de toda la base de datos en archivos .dat
+    private void cargarDatos() {
+        listaLibros = new ArrayList<>();
+        listaPrestamos = new ArrayList<>();
+        listaUsuarios = new ArrayList<>();
 
-    // === LIBROS ===
-    File archivo = new File("proyecto_principal/src/Recursos/libros.dat");
-    if (!archivo.exists()) {
-        try {
-            archivo.createNewFile();
-            System.out.println("ARCHIVO DE LIBROS CREADO CON EXITO");
+        // === LIBROS ===
+        File archivo = new File("proyecto_principal/src/Recursos/libros.dat");
+        if (!archivo.exists()) {
+            try {
+                archivo.createNewFile();
+                System.out.println("ARCHIVO DE LIBROS CREADO CON EXITO");
+            } catch (IOException e) {
+                System.out.println("ERROR AL CREAR EL ARCHIVO DE LIBROS: " + e.getMessage());
+            }
+        }
+
+        try (ObjectInputStream entrada = new ObjectInputStream(new FileInputStream(archivo))) {
+            while (true) {
+                Libros libro = (Libros) entrada.readObject();
+                listaLibros.add(libro);
+            }
+        } catch (EOFException e) {
+            System.out.println("Fin de archivo LIBROS alcanzado");
+        } catch (FileNotFoundException e) {
+            System.out.println("ARCHIVO DE LIBROS NO ENCONTRADO: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            System.out.println("CLASE DE LIBROS NO COMPATIBLE: " + e.getMessage());
         } catch (IOException e) {
-            System.out.println("ERROR AL CREAR EL ARCHIVO DE LIBROS: " + e.getMessage());
+            System.out.println("ERROR DE ENTRADA/SALIDA LIBROS: " + e.getMessage());
         }
-    }
 
-    try (ObjectInputStream entrada = new ObjectInputStream(new FileInputStream(archivo))) {
-        while (true) {
-            Libros libro = (Libros) entrada.readObject();
-            listaLibros.add(libro);
+        // === PRESTAMOS ===
+        File archivoPrestamos = new File("proyecto_principal/src/Recursos/prestamos.dat");
+        if (!archivoPrestamos.exists()) {
+            try {
+                archivoPrestamos.createNewFile();
+                System.out.println("ARCHIVO DE PRESTAMOS CREADO CON EXITO");
+            } catch (IOException e) {
+                System.out.println("ERROR AL CREAR EL ARCHIVO DE PRESTAMOS: " + e.getMessage());
+            }
         }
-    } catch (EOFException e) {
-        System.out.println("Fin de archivo LIBROS alcanzado");
-    } catch (FileNotFoundException e) {
-        System.out.println("ARCHIVO DE LIBROS NO ENCONTRADO: " + e.getMessage());
-    } catch (ClassNotFoundException e) {
-        System.out.println("CLASE DE LIBROS NO COMPATIBLE: " + e.getMessage());
-    } catch (IOException e) {
-        System.out.println("ERROR DE ENTRADA/SALIDA LIBROS: " + e.getMessage());
-    }
 
-    // === PRESTAMOS ===
-    File archivoPrestamos = new File("proyecto_principal/src/Recursos/prestamos.dat");
-    if (!archivoPrestamos.exists()) {
-        try {
-            archivoPrestamos.createNewFile();
-            System.out.println("ARCHIVO DE PRESTAMOS CREADO CON EXITO");
+        try (ObjectInputStream entrada = new ObjectInputStream(new FileInputStream(archivoPrestamos))) {
+            while (true) {
+                Prestamos prestamo = (Prestamos) entrada.readObject();
+                listaPrestamos.add(prestamo);
+            }
+        } catch (EOFException e) {
+            System.out.println("Fin de archivo PRESTAMOS alcanzado");
+        } catch (FileNotFoundException e) {
+            System.out.println("ARCHIVO DE PRESTAMOS NO ENCONTRADO: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            System.out.println("CLASE DE PRESTAMOS NO COMPATIBLE: " + e.getMessage());
         } catch (IOException e) {
-            System.out.println("ERROR AL CREAR EL ARCHIVO DE PRESTAMOS: " + e.getMessage());
+            System.out.println("ERROR DE ENTRADA/SALIDA PRESTAMOS: " + e.getMessage());
         }
-    }
 
-    try (ObjectInputStream entrada = new ObjectInputStream(new FileInputStream(archivoPrestamos))) {
-        while (true) {
-            Prestamos prestamo = (Prestamos) entrada.readObject();
-            listaPrestamos.add(prestamo);
+        // === USUARIOS ===
+        File archivoUsuarios = new File("proyecto_principal/src/Recursos/usuarios.dat");
+        if (!archivoUsuarios.exists()) {
+            try {
+                archivoUsuarios.createNewFile();
+                System.out.println("ARCHIVO DE USUARIOS CREADO CON EXITO");
+            } catch (IOException e) {
+                System.out.println("ERROR AL CREAR EL ARCHIVO DE USUARIOS: " + e.getMessage());
+            }
         }
-    } catch (EOFException e) {
-        System.out.println("Fin de archivo PRESTAMOS alcanzado");
-    } catch (FileNotFoundException e) {
-        System.out.println("ARCHIVO DE PRESTAMOS NO ENCONTRADO: " + e.getMessage());
-    } catch (ClassNotFoundException e) {
-        System.out.println("CLASE DE PRESTAMOS NO COMPATIBLE: " + e.getMessage());
-    } catch (IOException e) {
-        System.out.println("ERROR DE ENTRADA/SALIDA PRESTAMOS: " + e.getMessage());
-    }
 
-    // === USUARIOS ===
-    File archivoUsuarios = new File("proyecto_principal/src/Recursos/usuarios.dat");
-    if (!archivoUsuarios.exists()) {
-        try {
-            archivoUsuarios.createNewFile();
-            System.out.println("ARCHIVO DE USUARIOS CREADO CON EXITO");
+        try (ObjectInputStream entrada = new ObjectInputStream(new FileInputStream(archivoUsuarios))) {
+            while (true) {
+                Usuarios usuario = (Usuarios) entrada.readObject();
+                listaUsuarios.add(usuario);
+            }
+        } catch (EOFException e) {
+            System.out.println("Fin de archivo USUARIOS alcanzado");
+        } catch (FileNotFoundException e) {
+            System.out.println("ARCHIVO DE USUARIOS NO ENCONTRADO: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            System.out.println("CLASE DE USUARIOS NO COMPATIBLE: " + e.getMessage());
         } catch (IOException e) {
-            System.out.println("ERROR AL CREAR EL ARCHIVO DE USUARIOS: " + e.getMessage());
+            System.out.println("ERROR DE ENTRADA/SALIDA USUARIOS: " + e.getMessage());
         }
     }
 
-    try (ObjectInputStream entrada = new ObjectInputStream(new FileInputStream(archivoUsuarios))) {
-        while (true) {
-            Usuarios usuario = (Usuarios) entrada.readObject();
-            listaUsuarios.add(usuario);
+    //guarda todos los cambios registrados en los archivos .dat
+    private void guardarDatos() {
+        // === LIBROS ===
+        try (ObjectOutputStream salida = new ObjectOutputStream(new FileOutputStream("proyecto_principal/src/Recursos/libros.dat"))) {
+            for (Libros libro : listaLibros) {
+                salida.writeObject(libro);
+            }
+            System.out.println("ARCHIVO DE LIBROS GUARDADO CON EXITO");
+        } catch (IOException e) {
+            System.out.println("ERROR GUARDANDO LIBROS: " + e.getMessage());
+            e.printStackTrace();
         }
-    } catch (EOFException e) {
-        System.out.println("Fin de archivo USUARIOS alcanzado");
-    } catch (FileNotFoundException e) {
-        System.out.println("ARCHIVO DE USUARIOS NO ENCONTRADO: " + e.getMessage());
-    } catch (ClassNotFoundException e) {
-        System.out.println("CLASE DE USUARIOS NO COMPATIBLE: " + e.getMessage());
-    } catch (IOException e) {
-        System.out.println("ERROR DE ENTRADA/SALIDA USUARIOS: " + e.getMessage());
-    }
-}
 
-private void guardarDatos() {
-    // === LIBROS ===
-    try (ObjectOutputStream salida = new ObjectOutputStream(new FileOutputStream("proyecto_principal/src/Recursos/libros.dat"))) {
-        for (Libros libro : listaLibros) {
-            salida.writeObject(libro);
+        // === PRESTAMOS ===
+        try (ObjectOutputStream salida = new ObjectOutputStream(new FileOutputStream("proyecto_principal/src/Recursos/prestamos.dat"))) {
+            for (Prestamos prestamo : listaPrestamos) {
+                salida.writeObject(prestamo);
+            }
+            System.out.println("ARCHIVO DE PRESTAMOS GUARDADO CON EXITO");
+        } catch (IOException e) {
+            System.out.println("ERROR GUARDANDO PRESTAMOS: " + e.getMessage());
+            e.printStackTrace();
         }
-        System.out.println("ARCHIVO DE LIBROS GUARDADO CON EXITO");
-    } catch (IOException e) {
-        System.out.println("ERROR GUARDANDO LIBROS: " + e.getMessage());
-        e.printStackTrace();
-    }
 
-    // === PRESTAMOS ===
-    try (ObjectOutputStream salida = new ObjectOutputStream(new FileOutputStream("proyecto_principal/src/Recursos/prestamos.dat"))) {
-        for (Prestamos prestamo : listaPrestamos) {
-            salida.writeObject(prestamo);
+        // === USUARIOS ===
+        try (ObjectOutputStream salida = new ObjectOutputStream(new FileOutputStream("proyecto_principal/src/Recursos/usuarios.dat"))) {
+            for (Usuarios usuario : listaUsuarios) {
+                salida.writeObject(usuario);
+            }
+            System.out.println("ARCHIVO DE USUARIOS GUARDADO CON EXITO");
+        } catch (IOException e) {
+            System.out.println("ERROR GUARDANDO USUARIOS: " + e.getMessage());
+            e.printStackTrace();
         }
-        System.out.println("ARCHIVO DE PRESTAMOS GUARDADO CON EXITO");
-    } catch (IOException e) {
-        System.out.println("ERROR GUARDANDO PRESTAMOS: " + e.getMessage());
-        e.printStackTrace();
     }
-
-    // === USUARIOS ===
-    try (ObjectOutputStream salida = new ObjectOutputStream(new FileOutputStream("proyecto_principal/src/Recursos/usuarios.dat"))) {
-        for (Usuarios usuario : listaUsuarios) {
-            salida.writeObject(usuario);
-        }
-        System.out.println("ARCHIVO DE USUARIOS GUARDADO CON EXITO");
-    } catch (IOException e) {
-        System.out.println("ERROR GUARDANDO USUARIOS: " + e.getMessage());
-        e.printStackTrace();
-    }
-}
 
 }
 
