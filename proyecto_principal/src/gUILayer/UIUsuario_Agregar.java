@@ -1,32 +1,31 @@
 package gUILayer;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import objetos.Usuarios;
-import objetos.Prestamos;
 
-public class UIUsuario_eliminar extends JFrame {
-	private JPanel panel;
+public class UIUsuario_Agregar extends JFrame {
+    private JPanel panel;
 	private GridBagLayout layout = new GridBagLayout();
-	private JButton boton_Si,boton_No;
-	private JLabel aviso;	
-	private JComboBox<Usuarios> comboBoxUsuarios;
-	Principal principal;
+	private JButton boton_agregar;
+	private JLabel titulo,autor;
+	private Principal principal;
 
-	public UIUsuario_eliminar(Principal principal) {
+	public UIUsuario_Agregar(Principal principal) {
 		this.principal = principal;
-		setTitle("Eliminar Usuario");
+		setTitle("Agregar Usuario");
 		setSize(700,450);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -38,74 +37,56 @@ public class UIUsuario_eliminar extends JFrame {
 		panel = new JPanel(layout);
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(5, 5, 5, 5);
-		
-		//PARTE DEL aviso:
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.gridwidth=2;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		aviso=new JLabel("Seleccione el Usuario a eliminar:");
-		aviso.setFont(new Font("Arial", Font.PLAIN, 24));
-		aviso.setForeground(Color.RED);
-		panel.add(aviso,gbc);
-		//Parte del ComboBox
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		comboBoxUsuarios = new JComboBox<>();
-		for (Usuarios usuario : Principal.listaUsuarios) {
-			comboBoxUsuarios.addItem(usuario);
-		}
-		comboBoxUsuarios.setSelectedIndex(-1);
-		panel.add(comboBoxUsuarios,gbc);
-		
-		//PARTE DEL Boton ELIMINAR
-		gbc.gridx = 0;
-		gbc.gridy = 2;
-		gbc.gridwidth=1;
-		gbc.weightx = 0.5; 
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		boton_Si = new JButton("ELIMINAR");
-		boton_Si.setFont(new Font("Arial", Font.BOLD, 24));
-		boton_Si.addActionListener(e -> eliminarUsuario((Usuarios)comboBoxUsuarios.getSelectedItem()));
-		panel.add(boton_Si,gbc);
-		
-		//PARTE DEL Boton CANCELAR
-		gbc.gridx = 1;
-		gbc.gridy = 2;
-		gbc.gridwidth=1;
-		gbc.weightx = 0.5; 
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		boton_No = new JButton("CANCELAR");
-		boton_No.setFont(new Font("Arial", Font.PLAIN, 24));
-		boton_No.addActionListener(e -> this.dispose());
-		panel.add(boton_No,gbc);
-		
+
+			//PARTE DEL Titulo:
+			gbc.gridx = 0;
+			gbc.gridy = 0;
+			gbc.weightx=1.0;
+			gbc.weighty=1.0;
+			gbc.fill= GridBagConstraints.NONE;
+			titulo = new JLabel("Nombre de usuario:");
+			titulo.setFont(new Font("Arial", Font.PLAIN, 24));
+			panel.add(titulo,gbc);
+			//Insertar JTextField
+			JTextField txt_titulo = new JTextField(10);
+			gbc.gridx = 1;
+			gbc.gridy = 0;
+			gbc.fill= GridBagConstraints.HORIZONTAL;
+			txt_titulo.setFont(new Font("Arial", Font.PLAIN, 24));
+			panel.add(txt_titulo,gbc);
+			
+			//PARTE DEL Boton Agregar
+			gbc.gridx = 0;
+			gbc.gridy = 2;
+			gbc.gridwidth=2;
+			gbc.fill= GridBagConstraints.HORIZONTAL;
+			boton_agregar = new JButton("AGREGAR");
+			boton_agregar.setFont(new Font("Arial", Font.BOLD, 24));
+            String numUsuario = principal.listaUsuarios.size() + 1 + "";
+			boton_agregar.addActionListener(e -> agregarArrayList(txt_titulo.getText()));
+			panel.add(boton_agregar,gbc);
+			
+			//Aniadir panel
+			panel.setBackground(Color.pink);
+			panel.setPreferredSize(new Dimension(400, 300));
+			add(panel);
 	}
-public void eliminarUsuario(Usuarios usuario) {
-	boolean flag = false;
-	for (Usuarios usuarios : Principal.listaUsuarios) {
-		for (Prestamos prestamo : Principal.listaPrestamos) {
-			if (!prestamo.getUsuario().toString().equals(usuarios.toString())) {
-				flag = true;
-				break;
-			}
-		}
-	}
-	if(!flag){
-		if (usuario != null) {
-			for (int i = 0; i < Principal.listaUsuarios.size(); i++) {
-				if (Principal.listaUsuarios.get(i).equals(usuario)) {
-					Principal.listaUsuarios.remove(i);
-				}
-			}
+	public void agregarArrayList(String nombre) {
+		if (nombre.length() != 0){
+			String ultimoId = Principal.listaUsuarios.get(Principal.listaUsuarios.size()-1).getId();
+			int ultimoNumero;
+			if (Principal.listaUsuarios != null){
+				ultimoNumero = Integer.parseInt(ultimoId);
+			} else ultimoNumero = 0;
+			
+			String numUsuario = (ultimoNumero + 1) + "";
+			Principal.listaUsuarios.add(new Usuarios(nombre, numUsuario));
 			principal.contenidousuarios();
-			JOptionPane.showMessageDialog(null, "Se ha ELIMINADO el Usuario",null,JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Se ha agregado el Usuario",null,JOptionPane.INFORMATION_MESSAGE);
+		
 			this.dispose();
 		} else {
-			JOptionPane.showMessageDialog(null, "Seleccione un Usuario",null,JOptionPane.WARNING_MESSAGE);
-		}
-		} else {
-			JOptionPane.showMessageDialog(null, "No se puede eliminar el usuario porque tiene prestamos activos",null,JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Debe escribir un nombre de usuario",null,JOptionPane.WARNING_MESSAGE);
 		}
 	}
 }

@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import objetos.Usuarios;
+import objetos.Prestamos;
 
 public class UIUsuario_eliminar extends JFrame {
 	private JPanel panel;
@@ -81,17 +82,30 @@ public class UIUsuario_eliminar extends JFrame {
 		
 	}
 public void eliminarUsuario(Usuarios usuario) {
+	boolean flag = false;
+	for (Usuarios usuarios : Principal.listaUsuarios) {
+		for (Prestamos prestamo : Principal.listaPrestamos) {
+			if (!prestamo.getUsuario().toString().equals(usuarios.toString())) {
+				flag = true;
+				break;
+			}
+		}
+	}
+	if(!flag){
 		if (usuario != null) {
 			for (int i = 0; i < Principal.listaUsuarios.size(); i++) {
 				if (Principal.listaUsuarios.get(i).equals(usuario)) {
 					Principal.listaUsuarios.remove(i);
 				}
 			}
-			principal.actualizarTablaUsuarios();
-			this.dispose();
+			principal.contenidousuarios();
 			JOptionPane.showMessageDialog(null, "Se ha ELIMINADO el Usuario",null,JOptionPane.INFORMATION_MESSAGE);
+			this.dispose();
 		} else {
 			JOptionPane.showMessageDialog(null, "Seleccione un Usuario",null,JOptionPane.WARNING_MESSAGE);
+		}
+		} else {
+			JOptionPane.showMessageDialog(null, "No se puede eliminar el usuario porque tiene prestamos activos",null,JOptionPane.WARNING_MESSAGE);
 		}
 	}
 }
